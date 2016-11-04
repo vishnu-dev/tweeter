@@ -1,0 +1,20 @@
+{
+  "name": "user-session",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "vishnudev",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express-session": "^1.14.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^4.6.5",
+    "multer": "^1.2.0",
+    "path": "^0.12.7"
+  }
+}

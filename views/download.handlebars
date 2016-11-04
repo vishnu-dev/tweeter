@@ -1,0 +1,11 @@
+<h1>Download your file</h1>
+<br>
+{{#if filenamed}}
+<p name="filenamed">Filename : "{{filenamed}}"</p>
+<br>
+<form method="post" enctype="multipart/form-data" action="/download">
+<input class="btn btn-success" type="submit" value="Download">
+</form>
+{{else}}
+    <h5>Please upload a file..</h5>
+{{/if}}

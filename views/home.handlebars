@@ -1,0 +1,13 @@
+<div class="text-center"><h2>TWEETER</h2></div>
+{{#if tweets}}
+    {{#each tweets}}
+        <div class="container" style="width: 50%">
+            <div class="panel panel-info">
+                <div class="panel-heading">{{this.name}}</div>
+                <div class="panel-body">{{this.tweet}}</div>
+            </div>
+        </div>
+    {{/each}}
+{{else}}
+    <h4>No user has tweeted yet!</h4>
+{{/if}}
