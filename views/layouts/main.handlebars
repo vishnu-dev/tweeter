@@ -24,7 +24,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
+                    {{#unless name}}
+                      <li><a href="/">Home</a></li>
+                    {{/unless}}
                     <li><a href="/about">About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -32,8 +34,8 @@
                         <li><a><i>{{name}}&nbsp;|</i></a></li>
                         <li><a href="/tweet">Tweet</a></li>
                         <li><a href="/mytweets">MyTweets</a></li>
-                        <li><a href="/upload">Upload</a></li>
-                        <li><a href="/download">Download</a></li>
+                        <!-- <li><a href="/upload">Upload</a></li>
+                        <li><a href="/download">Download</a></li> -->
                         <li><a href="/logout">Logout</a></li>
                     {{else}}
                         <li><a href="/login">Login</a></li>

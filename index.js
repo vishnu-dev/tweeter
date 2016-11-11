@@ -19,8 +19,11 @@ app.set('view engine', 'handlebars');
 app.use(bparse.urlencoded({ extended: false }));
 app.use(bparse.json());
 
+// Static elements
+app.use('/uploads', express.static(__dirname + '/uploads'));
+
 // Mongoose database
-mongoose.connect('mongodb://127.0.0.1/usersystem');
+mongoose.connect('mongodb://vishnudev:87laugh56@ds151117.mlab.com:51117/usersystem');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -42,7 +45,8 @@ var User = mongoose.model('users', UserSchema);
 // Tweets collection
 var TweetSchema = mongoose.Schema({
     name: String,
-    tweet: String
+    tweet: String,
+    pic: String
 });
 var Tweeter = mongoose.model('tweets', TweetSchema);
 
@@ -63,7 +67,7 @@ routerPublic.use(function (req, res, next) {
 });
 routerLoggedin.use(function (req, res, next) {
     if(typeof req.session.user == 'undefined') {
-        res.render('login',{msgl:req.query});
+        res.render('start',{msgl:req.query});
     } else {
         next();
     }
@@ -76,25 +80,31 @@ var multipartUpload = multer({storage: multer.diskStorage({
 }).single('upfile');
 
 // Routes
-// HomePage
+
+// Homepage
+/*routerPublic.get('/', function (req,res) {
+    if(typeof req.session.user == 'undefined') {
+        res.render('start');
+    }
+});*/
+// HomePages
 routerLoggedin.get('/', function (req, res) {
     // var x = req.session.user;
-    if(req.session.user) {
+    if(req.session.user.name) {
         Tweeter.find((error, document) => {
             if (error) {
                 throw error;
             }
             else {
                 var allarr = [], i;
+                console.log(document);
                 for (i = 0; i < document.length; i++) {
-                    allarr.push({name:document[i].name,tweet:document[i].tweet});
+                    allarr.push({name:document[i].name,tweet:document[i].tweet,filea:document[i].pic});
                 }
-                res.render('home', {tweets: allarr});
+                res.render('home', {name:req.session.user.name,tweets: allarr.reverse()});
             }
         });
     }
-    else
-        res.render('home');
 });
 
 // SignupPage
@@ -103,12 +113,14 @@ routerPublic.get('/signup', function (req, res) {
 });
 
 // Signup DB Post
-routerPublic.post('/signup', function (req, res, next) {
+routerPublic.post('/signup',multipartUpload, function (req, res, next) {
+    console.log(req.file);
     var newUser = new User({
         name:req.body.name,
         email: req.body.email,
         pass: req.body.password,
-        conf: req.body.confirm
+        conf: req.body.confirm,
+        fname:req.file.filename
     });
     console.log(newUser);
     newUser.save();
@@ -218,10 +230,11 @@ routerLoggedin.post('/tweet', function (req,res) {
         else {
             var x = new Tweeter({
                 name:nam,
-                tweet:req.body.text
+                tweet:req.body.text,
+                pic:req.session.user.fname
             });
             x.save();
-            res.redirect('#');
+            res.redirect('/');
         }
     });
 });

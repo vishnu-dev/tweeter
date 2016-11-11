@@ -3,12 +3,10 @@
         <div class="panel-heading">
             <div class="panel-title text-center">
                 <h1 class="title">Register</h1>
-                <hr />
             </div>
         </div>
         <div class="main-login main-center" >
-            <form class="form-horizontal" method="post" action="/signup">
-
+            <form class="form-horizontal" enctype="multipart/form-data" method="post" action="/signup">
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Your Name</label>
                     <div class="cols-sm-10">
@@ -48,7 +46,10 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="confirm" class="cols-sm-2 control-label">Your Picture</label>
+                    <input class="btn btn-primary" type="file" name="upfile">
+                </div>
                 <div class="form-group ">
                     <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
                 </div>
