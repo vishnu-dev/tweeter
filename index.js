@@ -8,8 +8,8 @@ var multer = require('multer');
 var app = express();
 
 //Listening port
-app.listen(3000);
-console.log('Listening at port 3000');
+app.listen(process.env.PORT);
+console.log('Listening at port'+process.env.PORT);
 
 //Handlebars init
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
