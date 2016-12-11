@@ -8,9 +8,9 @@ var multer = require('multer');
 var app = express();
 
 //Listening port
-app.listen(process.env.PORT);
-console.log('Listening at port'+process.env.PORT);
-
+app.listen(3000);
+//console.log('Listening at port'+process.env.PORT);
+console.log('Listening at port'+3000);
 //Handlebars init
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -96,12 +96,13 @@ routerLoggedin.get('/', function (req, res) {
                 throw error;
             }
             else {
+            	var m = req.query.message;
                 var allarr = [], i;
-                console.log(document);
+                console.log(m);
                 for (i = 0; i < document.length; i++) {
                     allarr.push({name:document[i].name,tweet:document[i].tweet,filea:document[i].pic});
                 }
-                res.render('home', {name:req.session.user.name,tweets: allarr.reverse()});
+                res.render('home', {name:req.session.user.name,tweets: allarr.reverse(),m:m});
             }
         });
     }
@@ -138,7 +139,7 @@ routerPublic.get('/login', function (req, res) {
 
 // Login validation
 routerPublic.post('/login', function(req, res) {
-    User.findOne({name : req.body.name},(error, document) => {
+    User.findOne({email : req.body.email},(error, document) => {
         if (error) {
             throw error;
         }
@@ -154,7 +155,7 @@ routerPublic.post('/login', function(req, res) {
                 }
                 else {
                     req.session.user = document;
-                    res.render('login',{msgs:req.query,name:req.session.user.name});
+                    res.redirect('/?message='+encodeURIComponent('Logged in successfully!'));
                 }
             }
         }
