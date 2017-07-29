@@ -24,7 +24,17 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use('/public', express.static(__dirname + '/public'));
 
 // Mongoose database
-mongoose.connect(config.production.url);
+var options;
+if(process.env.NODE_ENV=="production")
+{
+    var options = {
+        user : process.env.MONGODB_ADDON_USER,
+        password : process.env.MONGODB_ADDON_PASSWORD
+    }
+    mongoose.connect(process.env.MONGODB_ADDON_URI,options);
+}
+else
+    mongoose.connect(config.dev.uri);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
