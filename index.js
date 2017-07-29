@@ -4,11 +4,11 @@ var bparse = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var multer = require('multer');
-
+var config = require('./config');
 var app = express();
 
 //Listening port
-app.listen(process.env.PORT);
+app.listen(process.env.PORT||3000);
 //console.log('Listening at port'+process.env.PORT);
 console.log('Listening at port'+3000);
 //Handlebars init
@@ -21,9 +21,10 @@ app.use(bparse.json());
 
 // Static elements
 app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/public', express.static(__dirname + '/public'));
 
 // Mongoose database
-mongoose.connect('mongodb://vishnudev:87laugh56@ds151117.mlab.com:51117/usersystem');
+mongoose.connect(config.production.url);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -235,8 +236,8 @@ routerLoggedin.post('/tweet', function (req,res) {
                 pic:req.session.user.fname
             });
             x.save();
-            res.redirect('/');
         }
+        res.redirect('/');
     });
 });
 routerLoggedin.get('/mytweets', function (req,res) {
