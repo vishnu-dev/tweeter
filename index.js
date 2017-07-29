@@ -4,7 +4,8 @@ var bparse = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var multer = require('multer');
-var config = require('./config');
+if(process.env.NODE_ENV!="production")
+    var config = require('./config');
 var app = express();
 
 //Listening port
